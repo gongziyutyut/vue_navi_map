@@ -23,7 +23,7 @@ export default {
         data: {
           projectId: ''
         },
-        headers: {token: ''}
+        headers: { token: '' }
       })
     }
   }

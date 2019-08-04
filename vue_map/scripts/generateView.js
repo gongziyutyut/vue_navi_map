@@ -5,13 +5,13 @@ const resolve = (...file) => path.resolve(__dirname, ...file)
 const log = (message) => console.log(chalk.green(message))
 const errorLog = (message) => console.log(chalk.red(message))
 const successLog = (message) => console.log(chalk.blue(message))
-const {vueTemplate} = require('./generateTemplate.js')
+const { vueTemplate } = require('./generateTemplate.js')
 
 const genenrateFile = (path, data) => {
   if (fs.existsSync(path)) {
     errorLog(`${path}文件已经存在`)
     return
-  } 
+  }
   return new Promise((resolve, reject) => {
     fs.writeFile(path, data, 'utf8', err => {
       if (err) {
@@ -53,7 +53,7 @@ process.stdin.on('data', async chunk => {
     log(`正在生成页面组件${componentVueName}`)
     await genenrateFile(componentVueName, vueTemplate(componentName))
     successLog(`文件生成成功`)
-  } catch(e) {
+  } catch (e) {
     errorLog(e.name)
   }
   process.stdin.emit('end')

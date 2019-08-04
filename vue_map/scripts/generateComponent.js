@@ -5,7 +5,7 @@ const resolve = (...file) => path.resolve(__dirname, ...file)
 const log = message => console.log(chalk.green(message))
 const errorLog = message => console.log(chalk.red(message))
 const successLog = message => console.log(chalk.blue(message))
-const {vueTemplate, entryTemplate} = require('./generateTemplate.js')
+const { vueTemplate, entryTemplate } = require('./generateTemplate.js')
 
 const generateFile = (path, data) => {
   if (fs.existsSync(path)) {
@@ -13,11 +13,11 @@ const generateFile = (path, data) => {
     return
   }
   return new Promise((resolve, reject) => {
-    fs.writeFile(path, data, 'utf8', err=>{
-      if(err) {
+    fs.writeFile(path, data, 'utf8', err => {
+      if (err) {
         errorLog(err.message)
         reject(err)
-      }else {
+      } else {
         resolve(true)
       }
     })
@@ -25,10 +25,10 @@ const generateFile = (path, data) => {
 }
 log('请输入要生成的组件名称、如需生成全局组件，请加 global/ 前缀')
 let componentName = ''
-  //一个指向 标准输入流(stdin) 的可读流(Readable Stream),以下为node部分
-  // 程序监听输入动作
-  //故通过stdin指向输入流
-  //resolve 的用法传入文件目录，传入文件名
+// 一个指向 标准输入流(stdin) 的可读流(Readable Stream),以下为node部分
+// 程序监听输入动作
+// 故通过stdin指向输入流
+// resolve 的用法传入文件目录，传入文件名
 process.stdin.on('data', async chunk => {
   const inputName = String(chunk).trim().toString()
   // 组件目录路径
@@ -42,7 +42,7 @@ process.stdin.on('data', async chunk => {
   if (hasComponentDirectory) {
     errorLog(`${componentDirectory}路径已经存在`)
     return
-  }else {
+  } else {
     log(`正在生成component目录${componentDirectory}`)
     await dotExistDirectoryCreate(componentDirectory)
   }

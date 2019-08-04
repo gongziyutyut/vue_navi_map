@@ -3,11 +3,9 @@ import router from '../src/router'
 import ElementUI from 'element-ui'
 import Qs from 'qs'
 
-
-
 const service = axios.create({
-  timeout: 5000,
- // baseURL: process.env.BASE.URL
+  timeout: 5000
+  // baseURL: process.env.BASE.URL
 })
 // post请求时，需要加一个请求头
 service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -24,7 +22,7 @@ service.interceptors.request.use(config => {
   return config
 }, (error) => {
   return Promise.reject(error)
-}) 
+})
 
 service.interceptors.response.use(response => {
   const statusCode = response.status
@@ -54,7 +52,7 @@ service.interceptors.response.use(response => {
   }
   const errorCode = error.response.status
   switch (errorCode) {
-    case 401 : 
+    case 401 :
       router.replace({
         path: '/login',
         query: {
@@ -62,7 +60,7 @@ service.interceptors.response.use(response => {
         }
       })
       break
-    case 403 : 
+    case 403 :
       ElementUI.Message({
         type: 'error',
         message: '登录信息过期，重新登录'
@@ -104,7 +102,7 @@ export const uploadFile = formData => {
 async uploadFileFn () {
   let file = document.queryselector('file')
   将获得的表单元素作为参数，对formData进行初始化
-  const data = new FormData(file) 
+  const data = new FormData(file)
   可以通过append()方法来追加数据,为此对象增加数据
   await uploadFile(data)
 }

@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const interfaceObj = {
-  "transmitData" : 'TRANSMITDATA'
+  'transmitData': 'TRANSMITDATA'
 }
 
 export default new Vuex.Store({
@@ -17,12 +17,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    [interfaceObj.transmitData] ({commit}, obj) {
+    [interfaceObj.transmitData] ({ commit }, obj) {
       commit([interfaceObj.transmitData], obj)
     }
   },
   getters: {
-    getTransmitData(state) {
+    getTransmitData (state) {
       return state[interfaceObj.transmitData]
     }
   }
