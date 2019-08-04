@@ -10,7 +10,7 @@ const {vueTemplate, entryTemplate} = require('./generateTemplate.js')
 const generateFile = (path, data) => {
   if (fs.existsSync(path)) {
     errorLog(`${path}文件已经存在`)
-    reutrn
+    return
   }
   return new Promise((resolve, reject) => {
     fs.writeFile(path, data, 'utf8', err=>{
@@ -21,7 +21,7 @@ const generateFile = (path, data) => {
         resolve(true)
       }
     })
-  }) 
+  })
 }
 log('请输入要生成的组件名称、如需生成全局组件，请加 global/ 前缀')
 let componentName = ''
@@ -41,7 +41,7 @@ process.stdin.on('data', async chunk => {
   const hasComponentDirectory = fs.existsSync(componentDirectory)
   if (hasComponentDirectory) {
     errorLog(`${componentDirectory}路径已经存在`)
-    return 
+    return
   }else {
     log(`正在生成component目录${componentDirectory}`)
     await dotExistDirectoryCreate(componentDirectory)

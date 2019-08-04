@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <!--<link rel="preload"> 一种资源提示，用于指定页面在加载后很快需要的资源  见vue-cli3文档-->
+<!--<link rel="preload"> 一种资源提示，用于指定页面在加载后很快需要的资源  见vue-cli3文档-->
     <!-- Preload 有 as 属性, 
       a、可以设置正确的资源加载优先级
       b、浏览器可以确保请求是符合内容安全策略的，安全策略是Content-Security-Policy: script-src 'self'，
@@ -13,21 +6,29 @@
       c、浏览器能根据 as 的值发送适当的 Accept 头部信息
       d、浏览器通过 as 值能得知资源类型，因此当获取的资源相同时，浏览器能够判断前面获取的资源是否能重用
     -->
-    <% if (process.env.NODE_ENV === 'production') {%> 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <% if (process.env.NODE_ENV === 'production') { %>
+
       <% for(var css of htmlWebpackPlugin.options.cdn.css) { %>
-        <link as="style" rel="preload" href="<%=css%>">
+        <link href="<%=css%>" rel="preload" as="style">
         <link rel="stylesheet" href="<%=css%>" as="style">
-      <%}%>
-      <% for(var js of htmlWebpackPlugin.option.cdn.js) { %>
-        <link rel="stylesheet" href="<%=js%>" rel="preload" as="script">
+      <% } %>
+      <% for(var js of htmlWebpackPlugin.options.cdn.js) { %>
+        <link href="<%=js%>" rel="preload" as="script">
         <script src="<%=js%>"></script>
-      <%}%>
-    <%}%>
-    <title>vue_map</title>
+        <% } %>
+    <% } %>
+    <title>vue-cli3-project</title>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but vue_map doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong>We're sorry but vue-cli3-project doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->

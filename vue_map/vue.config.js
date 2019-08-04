@@ -21,32 +21,36 @@ module.exports = {
       }).tap(args => {})
     }
     // 配置webpack打包要忽略的文件，键为包名， 值为引入后自己定义的变量名
-    var externals = {
+   /*  var externals = {
       vue: 'Vue',
-      'element-ui': 'ElementUI',
       axios: 'axios',
-      'vue-router': 'Router',
+      'element-ui': 'ELEMENT',
+      'vue-router': 'VueRouter',
       vuex: 'Vuex'
     }
     config.externals(externals)
     const cdn = {
       css: [
-        // element-ui的css
+        // element-ui css
         '//unpkg.com/element-ui/lib/theme-chalk/index.css'
       ],
       js: [
-        // vue, vuex, vue-router, axios, element-ui
-        '//cdn.bootcss.com/vue/2.6.10/vue.min.js',
-        '//cdn.bootcss.com/vuex/3.1.1/vuex.min.js',
-        '//cdn.bootcss.com/vue-router/3.0.7/vue-router.min.js',
-        '//cdn.bootcss.com/axios/0.19.0/axios.min.js',
+        // vue
+        '//cdn.staticfile.org/vue/2.5.22/vue.min.js',
+        // vue-router
+        '//cdn.staticfile.org/vue-router/3.0.2/vue-router.min.js',
+        // vuex
+        '//cdn.staticfile.org/vuex/3.1.0/vuex.min.js',
+        // axios
+        '//cdn.staticfile.org/axios/0.19.0-beta.1/axios.min.js',
+        // element-ui js
         '//unpkg.com/element-ui/lib/index.js'
       ]
     }
-    // 使用tap方法可以进行注册
-    config.plugin('html').tap(args => {
-      args[0].cdn = cdn
-      return args
-    })
+    config.plugin('html')
+      .tap(args => {
+        args[0].cdn = cdn
+        return args
+      }) */
   }
 }

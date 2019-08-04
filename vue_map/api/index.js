@@ -7,7 +7,7 @@ import Qs from 'qs'
 
 const service = axios.create({
   timeout: 5000,
-  baseURL: process.env.BASE.URL
+ // baseURL: process.env.BASE.URL
 })
 // post请求时，需要加一个请求头
 service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
