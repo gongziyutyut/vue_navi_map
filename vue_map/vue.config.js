@@ -24,7 +24,7 @@ module.exports = {
       }).tap(args => {})
     }
     // 配置webpack打包要忽略的文件，键为包名， 值为引入后自己定义的变量名
-    var externals = {
+    /* var externals = {
       vue: 'Vue',
       axios: 'axios',
       'element-ui': 'ELEMENT',
@@ -54,6 +54,6 @@ module.exports = {
       .tap(args => {
         args[0].cdn = cdn
         return args
-      })
+      }) */
   }
 }
