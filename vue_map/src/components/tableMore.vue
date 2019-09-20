@@ -116,11 +116,16 @@
                                     {{tableR[key]}}
                                 </div>
                                 <!-- 其他内容 -->
-                                <div v-else class="cell" :style="{'width':tableHVal.width?tableHVal.width+'px':'','min-width':tableHVal.minWidth?tableHVal.minWidth+'px':''}"
+                                <div v-else class="cell" :style="{'width':tableHVal.width?tableHVal.width+'px':tableHVal.minWidth+'px','min-width':tableHVal.minWidth?tableHVal.minWidth+'px':''}"
                                 @contextmenu.stop.prevent="sign($event,tableR,key,tableRInd,'mid')"
                                 @click="setCheckedBG($event,tableR,key,tableRInd)"
                                 :class="{checkedBlueCell:checkedBgObj.id==tableR.id&&checkedBgObj.key==key&&tableR[key]!=''}">
-                                    <el-input :class="{isWarning:tableR[key]=='#N/A',isPasted:(tableR.paste&&pasteCloum.indexOf(key)>-1)}"  v-if="(tableR['disableColumns'].split(';')).indexOf(key)>-1 || setDisabled(tableR,key)" :disabled="true || $store.state.notOperableSheetNames.indexOf(sheetName)>-1" v-model="tableR[key]"></el-input>
+                                    <template  v-if="(tableR['disableColumns'].split(';')).indexOf(key)>-1 || setDisabled(tableR,key)" >
+                                        <span class="pr5 t-ellipsis">{{tableR[key]}}</span>
+                                        <!-- <el-input :class="{isWarning:tableR[key]=='#N/A',isPasted:(tableR.paste&&pasteCloum.indexOf(key)>-1)}"  
+                                                  :disabled="true" v-model="tableR[key]"></el-input> -->
+                                    </template>
+                                    
                                     <el-select v-else-if="tableHVal.selected" v-model="tableR[key]" :disabled="tableR.id==''|| $store.state.notOperableSheetNames.indexOf(sheetName)>-1 ||!$store.state.readonly  || cols10 || (customDisplay && customDisplay.disabled)" @change="blurInp(tableR,key,$event,tableRInd,'作价规则')"
                                     :class="{isMarked:(tableR['columnNames'].split(',')).indexOf(key)>-1,isPasted:(tableR.paste&&pasteCloum.indexOf(key)>-1)}">
                                          <el-option
@@ -154,21 +159,26 @@
                                     :class="{isMarked:(tableR['columnNames'].split(',')).indexOf(key)>-1,isPasted:(tableR.paste&&pasteCloum.indexOf(key)>-1)}">
 	                                  </el-date-picker>
                                     <el-date-picker v-else-if="tableHVal.search && tableHVal.search.inputType=='year'" v-model="value5" type="year" placeholder="选择年" :disabled="!$store.state.readonly ||  $store.state.notOperableSheetNames.indexOf(sheetName)>-1 || cols10 || (customDisplay && customDisplay.disabled)"></el-date-picker>
-                                    <el-input v-else
-                                      v-model="tableR[key]"
-                                      @keyup.native="keyupInp($event,tableR,key)"
-                                      @blur="blurInp(tableR,key,$event,tableRInd,'',tableHVal)"
-                                      @focus="focusInp(tableR,key,$event)"
-                                    	:class="{isWarning:tableR[key]=='#N/A',
-                                                isMarked:(tableR['columnNames'].split(',')).indexOf(key)>-1,
-                                                isPasted:(tableR.paste&&pasteCloum.indexOf(key)>-1),
-                                                isDrag:tableR.drag==key,
-                                                isMoved:(tableR.moveCloum&&indx>=endTDMin&&indx<=endTDMax&&dragDec=='横向')||
-                                                        (tableR.moveCloum&&tableR.moveCloum==key&&tableR.numB>=endTDMin&&tableR.numB<=endTDMax&&dragDec=='纵向')}"
-                                      :disabled="!$store.state.readonly ||  $store.state.notOperableSheetNames.indexOf(sheetName)>-1 || cols10 || (customDisplay && customDisplay.disabled)"
-                                      @paste.native.capture.prevent="pasteFromExcel($event,tableR,key,tableRInd,tableHVal,indx)"
-                                      :data-cr="JSON.stringify(tableRInd)+','+key+','+tableR.id+','+tableR.numB+','+indx">
-                                    </el-input>
+                                    
+                                    <template v-else>
+                                      <span class="pr5 t-ellipsis">{{tableR[key]}}</span>
+                                      <!-- <el-input
+                                        v-model="tableR[key]"
+                                        @keyup.native="keyupInp($event,tableR,key)"
+                                        @blur="blurInp(tableR,key,$event,tableRInd,'',tableHVal)"
+                                        @focus="focusInp(tableR,key,$event)"
+                                        :class="{isWarning:tableR[key]=='#N/A',
+                                                  isMarked:(tableR['columnNames'].split(',')).indexOf(key)>-1,
+                                                  isPasted:(tableR.paste&&pasteCloum.indexOf(key)>-1),
+                                                  isDrag:tableR.drag==key,
+                                                  isMoved:(tableR.moveCloum&&indx>=endTDMin&&indx<=endTDMax&&dragDec=='横向')||
+                                                          (tableR.moveCloum&&tableR.moveCloum==key&&tableR.numB>=endTDMin&&tableR.numB<=endTDMax&&dragDec=='纵向')}"
+                                        :disabled="!$store.state.readonly ||  $store.state.notOperableSheetNames.indexOf(sheetName)>-1 || cols10 || (customDisplay && customDisplay.disabled)"
+                                        @paste.native.capture.prevent="pasteFromExcel($event,tableR,key,tableRInd,tableHVal,indx)"
+                                        :data-cr="JSON.stringify(tableRInd)+','+key+','+tableR.id+','+tableR.numB+','+indx">
+                                      </el-input> -->
+                                    </template>
+                                   
                                 </div>
                                 <!--拖拽的标点-->
                                 <div class="drag-peg"
@@ -226,12 +236,12 @@
                 <table>
                    <thead>
                        <tr v-for="(tableH,tableHInd) in tableHeader" :key="tableHInd">
-                          <th v-for="(tableHVal,key) in tableH" 
-                          :key="key" 
-                          v-if="!tableHVal.isNoShow&&!tableHVal.isSpecial&&tableHVal.fixed&& !(hiddenColumn.split(',').indexOf(key)>-1)" 
-                          v-show="!(cols10 && key==='operation')" 
-                          :align="tableHVal.align?tableHVal.align:'center'" 
-                          :rowspan="tableHVal.rowspan?tableHVal.rowspan:1" 
+                          <th v-for="(tableHVal,key) in tableH"
+                          :key="key"
+                          v-if="!tableHVal.isNoShow&&!tableHVal.isSpecial&&tableHVal.fixed&& !(hiddenColumn.split(',').indexOf(key)>-1)"
+                          v-show="!(cols10 && key==='operation')"
+                          :align="tableHVal.align?tableHVal.align:'center'"
+                          :rowspan="tableHVal.rowspan?tableHVal.rowspan:1"
                           :colspan="tableHVal.colspan?tableHVal.colspan:1">
                             <div  @contextmenu.prevent="contextmenuShow($event,'del')" v-if="key==='check'" class="cell" :style="{'width':tableHVal.width?tableHVal.width+'px':'','min-width':tableHVal.minWidth?tableHVal.minWidth+'px':''}">
                               <el-checkbox @change="checkAllFun" v-model="checkAll" :disabled="!$store.state.readonly || $store.state.notOperableSheetNames.indexOf(sheetName)>-1">全选</el-checkbox>
@@ -257,7 +267,7 @@
                     <tbody id="fix_wid_tbody">
                     <tr v-for="(tableR,tableRInd) in tableRowData" @click="addBg(tableRInd)" :key="tableRInd">
                       <td v-for="(tableHVal,key,indx) in tableHeader[tableHeader.length-1]"
-                          :key="key" 
+                          :key="key"
                           v-if="!tableR.trIsHide&&tableHVal.fixed&& !(hiddenColumn.split(',').indexOf(key)>-1)"
                           v-show="!(cols10 && key==='operation') "
                           :align="tableHVal.align?tableHVal.align:'center'"
@@ -398,10 +408,10 @@
                             <td v-for="(tableH,key) in tableHeader[tableHeader.length-1]"
                                 v-if="!(hiddenColumn.split(',').indexOf(key)>-1)"
                                 v-show="!(cols10 && key==='operation')"
-                                 :key="key" 
-                                 :align="tableH.align?tableH.align:'center'" 
+                                 :key="key"
+                                 :align="tableH.align?tableH.align:'center'"
                                  :class="tableH.align?tableH.align:'center'">
-                                <div class="cell" :style="{'width':tableH.width?tableH.width+'px':'','min-width':tableH.minWidth?tableH.minWidth+'px':''}">
+                                <div class="cell" :style="{'width':tableH.width?tableH.width+'px':tableH.minWidth+'px','min-width':tableH.minWidth?tableH.minWidth+'px':''}">
                                     <template v-if="tableH.footLabel">
                                         <span v-if="tableH.footLabel[tableTInd+'']=='合计'" class="t-ellipsis">
                                           {{tableH.footLabel[tableTInd]}}(共{{totalNum}}条已入库)
@@ -431,12 +441,12 @@
                 <table>
                   <tbody>
                     <tr v-for="(tableT,tableTInd) in totalData" :key="tableTInd">
-                      <td v-for="(tableH,key) in tableHeader[tableHeader.length-1]" 
-                          v-show="!(cols10 && key==='operation')" 
-                          :key="key" :align="tableH.align?tableH.align:'center'" 
+                      <td v-for="(tableH,key) in tableHeader[tableHeader.length-1]"
+                          v-show="!(cols10 && key==='operation')"
+                          :key="key" :align="tableH.align?tableH.align:'center'"
                           :class="tableH.align?tableH.align:'center'"
                           v-if="tableH.fixed&&!(hiddenColumn.split(',').indexOf(key)>-1)">
-                        <div class="cell" :style="{'width':tableH.width?tableH.width+'px':'','min-width':tableH.minWidth?tableH.minWidth+'px':''}">
+                        <div class="cell" :style="{'width':tableH.width?tableH.width+'px':tableH.minWidth+'px','min-width':tableH.minWidth?tableH.minWidth+'px':''}">
                             <template v-if="tableH.footLabel">
                                 <span v-if="tableH.footLabel[tableTInd+'']=='合计'" class="t-ellipsis" :title="`${tableH.footLabel[tableTInd]}(共${totalNum}条已入库`">
                                   {{tableH.footLabel[tableTInd]}}(共{{totalNum}}条已入库)
